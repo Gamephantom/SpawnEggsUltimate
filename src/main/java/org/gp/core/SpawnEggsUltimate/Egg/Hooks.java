@@ -33,36 +33,4 @@ public class Hooks {
     	spawnCreatureNBT(stack, entity);
     	par0World.spawnEntityInWorld(entity);
 	}
-	
-	//Changed and reprogrammed!
-    public static Entity spawnCreature(World par0World, int par1, double par2, double par4, double par6, ItemStack stack)
-    {
-        if (!EntityList.entityEggs.containsKey(Integer.valueOf(par1)))
-        {
-            return null;
-        }
-        else
-        {
-            Entity entity = null;
-
-            for (int j = 0; j < 1; ++j)
-            {
-                entity = EntityList.createEntityByID(par1, par0World);
-
-                if (entity != null && entity instanceof EntityLivingBase)
-                {
-                    EntityLiving entityliving = (EntityLiving)entity;
-                    entity.setLocationAndAngles(par2, par4, par6, MathHelper.wrapAngleTo180_float(par0World.rand.nextFloat() * 360.0F), 0.0F);
-                    entityliving.rotationYawHead = entityliving.rotationYaw;
-                    entityliving.renderYawOffset = entityliving.rotationYaw;
-                    entityliving.onSpawnWithEgg((IEntityLivingData)null);
-                    spawnCreatureNBT(stack, entity);
-                    par0World.spawnEntityInWorld(entity);
-                    entityliving.playLivingSound();
-                }else spawnNonLivingCreature(entity, par0World, par1, par2, par4, par6, stack);
-            }
-
-            return entity;
-        }
-    }
 }

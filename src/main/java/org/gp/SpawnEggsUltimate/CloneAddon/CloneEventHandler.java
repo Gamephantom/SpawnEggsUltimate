@@ -7,8 +7,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.gp.SpawnEggsUltimate.API.AccessGetterNBT;
 import org.gp.SpawnEggsUltimate.API.OnHitEntityEvent;
-import org.gp.core.SpawnEggsUltimate.SpawnEggsTransformer;
-
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -27,10 +25,9 @@ public class CloneEventHandler {
 				spawnEgg.stackTagCompound = new NBTTagCompound();
 			else if(spawnEgg.stackTagCompound.hasKey("SpawnData"))
 				spawnEgg.stackTagCompound.removeTag("SpawnData");
-			if(SpawnEggsTransformer.getObfuscated())
-			{
+			try{
 				spawnData = new AccessGetterNBT<Entity>().<NBTTagCompound>invokeMethodWithReturn(e, new NBTTagCompound(), "b", new Object[]{new NBTTagCompound()});
-			}else
+			}catch(NoClassDefFoundError ex)
 			{
 				spawnData = new AccessGetterNBT<Entity>().<NBTTagCompound>invokeMethodWithReturn(e, new NBTTagCompound(), "writeEntityToNBT", new Object[]{new NBTTagCompound()});		
 			}
