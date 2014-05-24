@@ -1,11 +1,15 @@
 package org.gp.core.SpawnEggsUltimate;
 
+import org.gp.SpawnEggsUltimate.API.EntityEggBase;
+
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList.EntityEggInfo;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -15,15 +19,21 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameData;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid="SpawnEggsCore", name="SpawnEggs Ultimate")
 public class SpawnEggsUltimate {
-	private static final Item spawnEgg = new SpawnEggPatch().setCreativeTab(new CreativeTabSpawnEgg("SpawnEggsU")).setUnlocalizedName("monsterPlacer").setTextureName("spawn_egg");
+	private static final Item spawnEggU = new SpawnEggPatch().setCreativeTab(new CreativeTabSpawnEgg("SpawnEggsU")).setUnlocalizedName("monsterPlacer").setTextureName("spawn_egg");
+	private EntityEggBase database;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e)
 	{
-		GameData.itemRegistry.putObject("spawnEggU", spawnEgg );
+		database = new EntityEggBase();
+		database.registerEgg(200, new EntityEggInfo(200,9,9));
+		GameRegistry.registerItem(spawnEggU, "spawnEggU");
+		//Delete old buggy egg^^
+		Items.spawn_egg.setCreativeTab(null);
 	}
 	
 	public void init(FMLInitializationEvent e)
@@ -33,7 +43,7 @@ public class SpawnEggsUltimate {
 	
 	private void registerDispenser()
 	{
-		BlockDispenser.dispenseBehaviorRegistry.putObject(spawnEgg, new BehaviorDefaultDispenseItem()
+		BlockDispenser.dispenseBehaviorRegistry.putObject(spawnEggU, new BehaviorDefaultDispenseItem()
 	    {
 	      public ItemStack dispenseStack(IBlockSource par1IBlockSource, ItemStack par2ItemStack)
 	      {
